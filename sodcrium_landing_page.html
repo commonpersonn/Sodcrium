@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sodcrium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --primary-red: #d30000;
+            --primary-blue: #001a99;
+            --dark-red: #590000;
+            --dark-blue: #000833;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Animasyonlu arka planın kaydırma çubuğu oluşturmasını engeller */
+            position: relative;
+        }
+
+        /* --- SIVI ARKA PLAN ANİMASYONLARI (LIQUID BACKGROUND) --- */
+        .liquid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(90px);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: moveBlobs 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--primary-red);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 700px;
+            height: 700px;
+            background: var(--primary-blue);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 500px;
+            height: 500px;
+            background: var(--dark-red);
+            top: 40%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+        
+        .blob-4 {
+            width: 400px;
+            height: 400px;
+            background: #2a0000;
+            bottom: 20%;
+            left: 10%;
+            animation-delay: -7s;
+        }
+
+        @keyframes moveBlobs {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 40px) scale(0.9); }
+            100% { transform: translate(20px, 20px) scale(1.05); }
+        }
+
+        /* --- LIQUID GLASS KART --- */
+        .glass-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 4rem;
+            text-align: center;
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            max-width: 90%;
+            width: 600px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .glass-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- BAŞLIK (GLOWING TITLE) --- */
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0;
+            background: linear-gradient(135deg, #ff4d4d, #4d4dff, #ff0000);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 5s ease infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.4)) drop-shadow(0 0 30px rgba(0, 0, 255, 0.4));
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- BUTONLAR --- */
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .glass-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Sıvı parlama efekti */
+        .glass-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.6s ease;
+        }
+
+        .glass-btn:hover::before {
+            left: 200%;
+        }
+
+        .glass-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-highlight);
+        }
+
+        /* İndir Butonu Özelleştirmesi (Kırmızı Glow) */
+        .btn-download:hover {
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3), inset 0 0 10px rgba(255, 0, 0, 0.2);
+            border-color: rgba(255, 77, 77, 0.5);
+        }
+
+        /* Discord Butonu Özelleştirmesi (Mavi Glow) */
+        .btn-discord:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 255, 0.3), inset 0 0 10px rgba(0, 0, 255, 0.2);
+            border-color: rgba(77, 77, 255, 0.5);
+        }
+
+        .btn-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 600px) {
+            .glass-container {
+                padding: 2.5rem 1.5rem;
+            }
+            .title {
+                font-size: 3rem;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .glass-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Arka plan renk küreleri -->
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <!-- Ana İçerik -->
+    <div class="glass-container">
+        <h1 class="title">Sodcrium</h1>
+        
+        <div class="btn-group">
+            <!-- İndir Butonu -->
+            <a href="https://download854.mediafire.com/w5h1i9a82eog9T9TAklKRKgPR8N2y1SuUPXuz0ZWeAoPxQQWi5pu1A5WGYXWSn7ptflYWQp2z4OK1i0J4s4eXJtYT4mukwZN4cdBPEx1hf98Xrv7POlRniDmhactrtcp38DBZnPhQ3rli17-DmQWqVCXYUzfmx2IA88LAvgW1G62RLc/pnooe66hb1k20gc/SodCrium_v1.0_Kurulum.exe" class="glass-btn btn-download" target="_blank" rel="noopener noreferrer">
+                <svg class="btn-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                İndir
+            </a>
+
+            <!-- Discord Butonu -->
+            <a href="https://discord.gg/peyY73VDPw" class="glass-btn btn-discord" target="_blank" rel="noopener noreferrer">
+                <svg class="btn-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
+                </svg>
+                Discord'a Katıl
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
